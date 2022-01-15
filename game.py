@@ -18,14 +18,13 @@ class Jogar:
 
     def run(self):
         self.fundo.draw()
-        self.janela.draw_text(str(self.nave.pontosNave), self.janela.width/2-25, 0, size=50, color=(255, 255, 255), font_name="Arial", bold=True,
+        self.janela.draw_text(str(self.nave.pontosNave), self.janela.width/2-25, 5, size=50, color=(255, 255, 255), font_name="calibri", bold=True,
                          italic=False)
-        self.janela.draw_text("fps: "+str(self.frameRate), self.janela.width - 100, 0, size=20, color=(255, 255, 255), font_name="Arial",
+        self.janela.draw_text("fps: "+str(self.frameRate), self.janela.width - 100, 5, size=20, color=(255, 255, 255), font_name="calibri",
                          bold=False, italic=True)
 
         self.nave.run()
         self.monstros.run()
-
 
         self.countTempo += self.janela.delta_time()
         self.countFrame += 1
@@ -33,6 +32,11 @@ class Jogar:
             self.frameRate = self.countFrame
             self.countTempo = 0
             self.countFrame = 1
+
+        if not self.monstros.inimigos:
+            dados.GAME_STATE = 1
+        if not self.nave.vidasNave:
+            dados.GAME_STATE = 1
 
         if self.teclado.key_pressed('ESC'):
             dados.GAME_STATE = 1
