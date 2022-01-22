@@ -42,4 +42,4 @@ class Menu:
             if self.mouse.is_over_object(self.btSair):
                 if self.mouse.is_button_pressed(1):
                     dados.cdTempo = 0
-                    dados.GAME_STATE = 4
+                    dados.GAME_STATE = 5

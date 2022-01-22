@@ -5,20 +5,24 @@ from random import randint
 class Inimigos:
     def __init__(self, janela, nave):
         self.janela = janela
-        self.linsInimigos = 2 + (2*dados.DIFICULDADE)
-        self.colsInimigos = 2 + (3*dados.DIFICULDADE)
+        self.linsInimigos = min(2 + (1*dados.FASE), 6)
+        self.colsInimigos = min(3 + (2*dados.FASE), 8)
+
 
         self.inimigos = []
-        self.velMonstroX = 200 * dados.DIFICULDADE
+        self.velMonstroX = 50 + 50*dados.DIFICULDADE + 40*dados.FASE
         self.velMonstroY = 30
         self.velTiroInimigo = 250 + (20*dados.DIFICULDADE)
         self.nave = nave
         self.cdNaveInvencivel = 0
         self.naveLevouDano = False
+        self.colidiuNave = False
 
         self.cooldownDescida = 0
         self.cooldownTiro = 0
-        self.tempoTiro = randint(5,20)/10
+        self.diminuiCooldownTiro = 0
+        self.tempoTiro = randint(min(0,50-(min(40,10*dados.FASE)))-self.diminuiCooldownTiro,
+                                 min(60,200-(min(100,30*dados.FASE)-self.diminuiCooldownTiro)))/100
         self.tirosMonstros = []
 
         self.criaInimigos()
@@ -62,6 +66,13 @@ class Inimigos:
                     #print("analisando monstros")
                     if tiro.collided(mon):
                         #print("colidiu!")
+                        # aumenta a velocidade dos monstros
+                        if self.velMonstroX > 0:
+                            self.velMonstroX += 8 + 2*dados.FASE
+                        if self.velMonstroX < 0:
+                            self.velMonstroX -= 8 + 2*dados.FASE
+                        # diminui o cooldown do tiro
+                        self.diminuiCooldownTiro += 20
                         self.nave.tiros.remove(tiro)
                         self.inimigos.remove(mon)
                         self.nave.pontosNave += 1
@@ -120,15 +131,17 @@ class Inimigos:
             t.draw()
 
         self.cooldownTiro += self.janela.delta_time()
+        if self.inimigos[-1].y + self.inimigos[-1].height >= self.nave.nave.y:
+            self.colidiuNave = True
+
+        if self.cooldownTiro >= self.tempoTiro:
+            #print("hora de atirar!")
+            self.atiraMonstro()
 
         self.detectaMorteMonstro()
         self.detectaDanoNave()
         if self.naveLevouDano:
             self.piscaNave()
-
-        if self.cooldownTiro >= self.tempoTiro:
-            #print("hora de atirar!")
-            self.atiraMonstro()
 
         self.movimentaTiros()
         self.movimentaInimigos()

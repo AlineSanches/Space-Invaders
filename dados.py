@@ -7,5 +7,6 @@ janela.set_title('Space Invaders')
 fundo = GameImage("./img/galaxy.jpg")
 
 cdTempo = 0
-GAME_STATE = 1
+GAME_STATE = 0
 DIFICULDADE = 1
+FASE = 1

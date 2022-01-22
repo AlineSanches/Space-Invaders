@@ -10,12 +10,12 @@ class Nave:
         self.nave.set_position(janela.width / 2 - self.nave.width / 2, janela.height - self.nave.height*1.25)
         self.tiros = []
         self.teclado = janela.get_keyboard()
-        self.velNave = 280 - (30*dados.DIFICULDADE)
-        self.velTiro = 300 - (20*dados.DIFICULDADE)
+        self.velNave = 250 - (30*dados.DIFICULDADE) + (30*dados.FASE)
+        self.velTiro = 350 - (20*dados.DIFICULDADE) + (50*dados.FASE)
 
         self.pontosNave = 0
         self.vidasNave = []
-        self.qtdVidas = 6 - (1*dados.DIFICULDADE)
+        self.qtdVidas = 4
 
         self.countTempo = 0
         self.iniciaVidas()
@@ -33,7 +33,7 @@ class Nave:
         if self.teclado.key_pressed("RIGHT") and self.nave.x <= self.janela.width - self.nave.width:
             self.nave.x += self.velNave * self.janela.delta_time()
 
-        if self.teclado.key_pressed("SPACE") and self.countTempo>(0.4+0.1*dados.DIFICULDADE):
+        if self.teclado.key_pressed("SPACE") and self.countTempo>(0.5+0.1*dados.DIFICULDADE-(min(0.07*dados.FASE, 0.3))):
             tiroCriado = Sprite("img/bullet.png",1)
             tiroCriado.x = self.nave.x + self.nave.width/2 - tiroCriado.width/2
             tiroCriado.y = self.nave.y - tiroCriado.height

@@ -22,6 +22,8 @@ class Jogar:
                          italic=False)
         self.janela.draw_text("fps: "+str(self.frameRate), self.janela.width - 100, 5, size=20, color=(255, 255, 255), font_name="calibri",
                          bold=False, italic=True)
+        self.janela.draw_text("FASE " + str(dados.FASE), self.janela.width - 300, 5, size=40, color=(255, 255, 255),
+                              font_name="calibri", bold=True, italic=False)
 
         self.nave.run()
         self.monstros.run()
@@ -34,10 +36,12 @@ class Jogar:
             self.countFrame = 1
 
         if not self.monstros.inimigos:
-            dados.GAME_STATE = 1
-        if not self.nave.vidasNave:
-            dados.GAME_STATE = 1
+            dados.GAME_STATE = 4
+            dados.FASE += 1
+
+        if not self.nave.vidasNave or self.monstros.colidiuNave:
+            dados.GAME_STATE = 0
 
         if self.teclado.key_pressed('ESC'):
-            dados.GAME_STATE = 1
+            dados.GAME_STATE = 0
 
