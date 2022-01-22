@@ -8,6 +8,7 @@ class Menu:
         self.mouse = janela.get_mouse()
         self.titulo = GameImage("img/title.png")
 
+        # botões
         self.btJogar = GameImage("img/buttons/btJogar.png")
         self.btDificuldade = GameImage("img/buttons/btDificuldade.png")
         self.btRanking = GameImage("img/buttons/btRanking.png")
@@ -21,6 +22,7 @@ class Menu:
 
 
     def run(self):
+        # draw
         self.fundo.draw()
         self.titulo.draw()
         self.btJogar.draw()
@@ -28,7 +30,8 @@ class Menu:
         self.btRanking.draw()
         self.btSair.draw()
 
-        if dados.cdTempo >= 0.5:
+        # funcionalidade dos botões
+        if dados.cdTempo >= 0.5:  # para correção de problemas como duplo clique em um
             if self.mouse.is_over_object(self.btJogar):
                 if self.mouse.is_button_pressed(1):
                     dados.cdTempo = 0

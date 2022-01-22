@@ -1,6 +1,6 @@
 import dados
-import menu
 from PPlay.gameimage import *
+
 
 class TelaDificuldades:
     def __init__(self, janela, fundo):
@@ -18,11 +18,13 @@ class TelaDificuldades:
             self.lisBtsDificuldade[i].y = 130 * (i + 1) + self.lisBtsDificuldade[i].height / 2
 
     def run(self):
+        # draw
         self.fundo.draw()
         for i in range(len(self.lisBtsDificuldade)):
             self.lisBtsDificuldade[i].draw()
 
-        if dados.cdTempo >= 0.5:
+        # mudança da dificuldade de acordo com o botão apertado
+        if dados.cdTempo >= 0.5:  # para correção de problemas como duplo clique em um
             if self.mouse.is_over_object(self.btFacil):
                 if self.mouse.is_button_pressed(1):
                     dados.cdTempo = 0

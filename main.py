@@ -11,10 +11,11 @@ def main():
         return menu, game, telaDificuldades
 
     while True:
+        # estado de início, morte do jogador e ESC para voltar ao menu
         if dados.GAME_STATE == 0:
-            menu, game, telaDificuldades = setup()
             dados.DIFICULDADE = 1
             dados.FASE = 1
+            menu, game, telaDificuldades = setup()
             dados.GAME_STATE = 1
 
         elif dados.GAME_STATE == 1:

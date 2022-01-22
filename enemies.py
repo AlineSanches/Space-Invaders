@@ -2,29 +2,34 @@ import dados
 from PPlay.sprite import *
 from random import randint
 
+
 class Inimigos:
     def __init__(self, janela, nave):
         self.janela = janela
+        # configurações da matriz de monstros
         self.linsInimigos = min(2 + (1*dados.FASE), 6)
         self.colsInimigos = min(3 + (2*dados.FASE), 8)
-
-
         self.inimigos = []
+
+        # configurações dos monstros
         self.velMonstroX = 50 + 50*dados.DIFICULDADE + 40*dados.FASE
         self.velMonstroY = 30
-        self.velTiroInimigo = 250 + (20*dados.DIFICULDADE)
+        self.cooldownDescida = 0
+
+        # configurações extra da nave
         self.nave = nave
         self.cdNaveInvencivel = 0
         self.naveLevouDano = False
         self.colidiuNave = False
 
-        self.cooldownDescida = 0
+        # configurações dos tiros dos monstros
+        self.velTiroInimigo = 250 + (20 * dados.DIFICULDADE)
         self.cooldownTiro = 0
         self.diminuiCooldownTiro = 0
-        self.tempoTiro = randint(min(0,50-(min(40,10*dados.FASE)))-self.diminuiCooldownTiro,
-                                 min(60,200-(min(100,30*dados.FASE)-self.diminuiCooldownTiro)))/100
+        self.tempoTiro = randint(50-10*dados.FASE, 200-30*dados.FASE)/100
         self.tirosMonstros = []
 
+        # cria a matriz de monstros
         self.criaInimigos()
 
     def criaInimigos(self):
@@ -72,7 +77,7 @@ class Inimigos:
                         if self.velMonstroX < 0:
                             self.velMonstroX -= 8 + 2*dados.FASE
                         # diminui o cooldown do tiro
-                        self.diminuiCooldownTiro += 20
+                        self.diminuiCooldownTiro += 5
                         self.nave.tiros.remove(tiro)
                         self.inimigos.remove(mon)
                         self.nave.pontosNave += 1
@@ -98,7 +103,8 @@ class Inimigos:
     def piscaNave(self):
         if self.cdNaveInvencivel <= 2:
             self.cdNaveInvencivel += self.janela.delta_time()
-            if 0 <= self.cdNaveInvencivel <= 0.4 or 0.7 <= self.cdNaveInvencivel <= 1.1 or 1.4 <= self.cdNaveInvencivel <= 1.7:
+            if 0 <= self.cdNaveInvencivel <= 0.4 or 0.7 <= self.cdNaveInvencivel <= 1.1 or \
+                    1.4 <= self.cdNaveInvencivel <= 1.7:
                 coordsAnteriores = (self.nave.nave.x, self.nave.nave.y)
                 self.nave.nave = Sprite("img/naveDano.png")
                 self.nave.nave.set_position(coordsAnteriores[0], coordsAnteriores[1])
@@ -116,7 +122,8 @@ class Inimigos:
         tiroCriado.y = self.inimigos[idMonstroAtira].y + self.inimigos[idMonstroAtira].height
         self.tirosMonstros.append(tiroCriado)
         self.cooldownTiro = 0
-        self.tempoTiro = randint(3+(6/dados.DIFICULDADE),20)/10
+        self.tempoTiro = randint(max(20,(80-10*dados.FASE-self.diminuiCooldownTiro)),
+                                 max(100,(230-30*dados.FASE-self.diminuiCooldownTiro)))/100
 
     def movimentaTiros(self):
         for tiro in self.tirosMonstros:
@@ -125,15 +132,19 @@ class Inimigos:
             tiro.y += self.velTiroInimigo*self.janela.delta_time()
 
     def run(self):
+        # draw
         for i in self.inimigos:
             i.draw()
         for t in self.tirosMonstros:
             t.draw()
 
         self.cooldownTiro += self.janela.delta_time()
+
+        # detecta colisão com a nave (fim de jogo)
         if self.inimigos[-1].y + self.inimigos[-1].height >= self.nave.nave.y:
             self.colidiuNave = True
 
+        # detecta se deve atirar (aleatório)
         if self.cooldownTiro >= self.tempoTiro:
             #print("hora de atirar!")
             self.atiraMonstro()

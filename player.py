@@ -15,7 +15,7 @@ class Nave:
 
         self.pontosNave = 0
         self.vidasNave = []
-        self.qtdVidas = 4
+        self.qtdVidas = 5
 
         self.countTempo = 0
         self.iniciaVidas()

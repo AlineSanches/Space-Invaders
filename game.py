@@ -17,6 +17,7 @@ class Jogar:
         self.frameRate = 0
 
     def run(self):
+        # draw de estáticos
         self.fundo.draw()
         self.janela.draw_text(str(self.nave.pontosNave), self.janela.width/2-25, 5, size=50, color=(255, 255, 255), font_name="calibri", bold=True,
                          italic=False)
@@ -25,9 +26,11 @@ class Jogar:
         self.janela.draw_text("FASE " + str(dados.FASE), self.janela.width - 300, 5, size=40, color=(255, 255, 255),
                               font_name="calibri", bold=True, italic=False)
 
+        # roda a mecanica do jogo
         self.nave.run()
         self.monstros.run()
 
+        # cálculo do fps
         self.countTempo += self.janela.delta_time()
         self.countFrame += 1
         if self.countTempo >= 1:
@@ -35,10 +38,12 @@ class Jogar:
             self.countTempo = 0
             self.countFrame = 1
 
+        # checagem se morreram todos os monstros, para mudar de fase
         if not self.monstros.inimigos:
             dados.GAME_STATE = 4
             dados.FASE += 1
 
+        # checagem de fim de jogo (fim das vidas ou monstros colidiram com a nave)
         if not self.nave.vidasNave or self.monstros.colidiuNave:
             dados.GAME_STATE = 0
 
