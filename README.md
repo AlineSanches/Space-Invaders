@@ -7,3 +7,9 @@ Jogo desenvolvido com a biblioteca PPlay na disciplina Laboratório de Programa�
 
 ## Jogo
 ![space-invaders_game](https://github.com/AlineSanches/Space-Invaders/blob/main/img/readme/space-invaders_game.gif)
+
+
+### Créditos
+Sprites usados: Gustavo Vituri (https://gvituri.itch.io/space-shooter)
+
+Agradeço ao meu amigo [Fred Paiva](https://github.com/fredpaiva42), aprendi muito com o código dele para esse jogo.
