@@ -16,14 +16,39 @@ class Jogar:
         self.countFrame = 0
         self.frameRate = 0
 
+
+    def adicionaPontuacaoRanking(self, nomeJogador, pontos):
+        from os import remove, rename
+        dadosRanking = open("rankingPontos", "r", encoding="utf-8")
+        dadosRankingTemp = open("rankingPontos"+"$$$", "w", encoding="utf-8")
+        escreveu = False
+
+        for linha in dadosRanking:
+            nome, pts = linha.strip("\n").split("#")
+            pts = int(pts)
+            if pts<pontos and not escreveu:
+                dadosRankingTemp.write(nomeJogador + "#" + str(pontos) + "\n")
+                escreveu = True
+            dadosRankingTemp.write(nome + "#" + str(pts) + "\n")
+
+        if not escreveu:
+            dadosRankingTemp.write(nomeJogador + "#" + str(pontos) + "\n")
+
+
+        dadosRanking.close()
+        dadosRankingTemp.close()
+        remove("rankingPontos")
+        rename("rankingPontos" + "$$$", "rankingPontos")
+        return None
+
     def run(self):
         # draw de estáticos
         self.fundo.draw()
-        self.janela.draw_text(str(self.nave.pontosNave), self.janela.width/2-25, 5, size=50, color=(255, 255, 255), font_name="calibri", bold=True,
+        self.janela.draw_text(str(dados.pontosNave), self.janela.width/2-25, 5, size=50, color=(238, 204, 231), font_name="calibri", bold=True,
                          italic=False)
-        self.janela.draw_text("fps: "+str(self.frameRate), self.janela.width - 100, 5, size=20, color=(255, 255, 255), font_name="calibri",
+        self.janela.draw_text("fps: "+str(self.frameRate), self.janela.width - 100, 5, size=20, color=(238, 204, 231), font_name="calibri",
                          bold=False, italic=True)
-        self.janela.draw_text("FASE " + str(dados.FASE), self.janela.width - 300, 5, size=40, color=(255, 255, 255),
+        self.janela.draw_text("FASE " + str(dados.FASE), self.janela.width - 300, 5, size=40, color=(238, 204, 231),
                               font_name="calibri", bold=True, italic=False)
 
         # roda a mecanica do jogo
@@ -45,6 +70,9 @@ class Jogar:
 
         # checagem de fim de jogo (fim das vidas ou monstros colidiram com a nave)
         if not self.nave.vidasNave or self.monstros.colidiuNave:
+            nomeJogador = input("Digite seu nome: ")
+            self.adicionaPontuacaoRanking(nomeJogador, dados.pontosNave)
+            dados.pontosNave = 0
             dados.GAME_STATE = 0
 
         if self.teclado.key_pressed('ESC'):

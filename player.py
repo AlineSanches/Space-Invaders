@@ -13,7 +13,6 @@ class Nave:
         self.velNave = 250 - (30*dados.DIFICULDADE) + (30*dados.FASE)
         self.velTiro = 350 - (20*dados.DIFICULDADE) + (50*dados.FASE)
 
-        self.pontosNave = 0
         self.vidasNave = []
         self.qtdVidas = 5
 

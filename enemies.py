@@ -80,7 +80,7 @@ class Inimigos:
                         self.diminuiCooldownTiro += 5
                         self.nave.tiros.remove(tiro)
                         self.inimigos.remove(mon)
-                        self.nave.pontosNave += 1
+                        dados.pontosNave += 1
                         colidiu = True
                         break
                 if colidiu:

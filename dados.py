@@ -10,3 +10,4 @@ cdTempo = 0
 GAME_STATE = 0
 DIFICULDADE = 1
 FASE = 1
+pontosNave = 0

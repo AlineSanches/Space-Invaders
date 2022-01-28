@@ -42,6 +42,11 @@ class Menu:
                     dados.cdTempo = 0
                     dados.GAME_STATE = 3
 
+            if self.mouse.is_over_object(self.btRanking):
+                if self.mouse.is_button_pressed(1):
+                    dados.cdTempo = 0
+                    dados.GAME_STATE = 6
+
             if self.mouse.is_over_object(self.btSair):
                 if self.mouse.is_button_pressed(1):
                     dados.cdTempo = 0
